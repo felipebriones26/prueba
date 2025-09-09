@@ -1,9 +1,9 @@
-// ======== Estado ========
+// Estado 
 let carrito = [];
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
-// ======== Catálogo ========
+// Catálogo 
 const productos = {
   juegos: [
     { id:"catan",
@@ -23,7 +23,7 @@ const productos = {
       fabricante: "Hans im Glück",
       categoria: "juegos",
       descripcion: "Un juego de colocación de fichas donde los jugadores construyen el paisaje alrededor de la fortaleza medieval de Carcassonne. Ideal para 2-5 jugadores y fácil de aprender."
-    }
+    } 
   ],
   accesorios: [
     { id:"xboxpad",
@@ -124,14 +124,14 @@ const productos = {
 
 };
 
-// ======== Utilidades ========
+// Utilidades 
 function toCLP(n){return n.toLocaleString('es-CL');}
 function getUsuarios(){return JSON.parse(localStorage.getItem('usuarios'))||[]}
 function setUsuarios(list){localStorage.setItem('usuarios', JSON.stringify(list))}
 function getActivo(){return JSON.parse(localStorage.getItem('usuarioActivo'))}
 function setActivo(u){localStorage.setItem('usuarioActivo', JSON.stringify(u))}
 
-// ======== Render de productos ========
+//  Render de productos 
 const contenedor = document.getElementById('contenedor-productos');
 const listaCategorias = document.getElementById('lista-categorias');
 const btnCategorias = document.getElementById('btn-categorias');
@@ -222,7 +222,7 @@ function actualizarPromedio(id){
   if(span) span.textContent = `Promedio: ${getPromedio(id)} ⭐`;
 }
 
-// ======== Carrito ========
+//  Carrito 
 function actualizarCarrito(){
   const lista = document.getElementById('lista-carrito');
   const totalElement = document.getElementById('total');
@@ -259,7 +259,7 @@ function agregarAlCarrito(id){
   let existente = carrito.find(i=>i.id===id);
   if(existente){ existente.cantidad++; }
   else { carrito.push({ id:p.id, nombre:p.nombre, precio:p.precio, cantidad:1 }); }
-  otorgarPuntos(5); // gamificación por acción
+  otorgarPuntos(5); 
   actualizarCarrito();
 }
 function cambiarCantidad(index, val){ carrito[index].cantidad = Math.max(1, parseInt(val||1)); actualizarCarrito(); }
@@ -267,23 +267,23 @@ function eliminarDelCarrito(index){ carrito.splice(index,1); actualizarCarrito()
 function limpiarCarrito(){ carrito = []; actualizarCarrito(); }
 function pagar(){
   if(!carrito.length){ alert('Tu carrito está vacío'); return; }
-  otorgarPuntos(25); // puntos por compra simulada
+  otorgarPuntos(25); 
   alert('✅ ¡Gracias por tu compra! (simulado)');
   limpiarCarrito();
 }
 
-// ======== Compartir ========
+//  Compartir 
 function compartirProducto(nombre){
   const data = { title:'Level-Up Gamer', text:`Mira este producto: ${nombre}`, url: location.href };
   if(navigator.share){ navigator.share(data).catch(()=>{}); }
   else { prompt('Copia el enlace y compártelo:', data.url); }
 }
 
-// ======== Formularios mostrar/ocultar ========
+// Formularios mostrar/ocultar 
 function mostrarFormulario(id){ ['registro','ingresar','perfil'].forEach(x=>document.getElementById(x).classList.add('oculto')); document.getElementById(id).classList.remove('oculto'); }
 function cerrarForm(id){ document.getElementById(id).classList.add('oculto'); }
 
-// ======== Registro ========
+// Registro 
 document.getElementById('formRegistro')?.addEventListener('submit', (e)=>{
   e.preventDefault();
   const nombre = document.getElementById('nombre').value.trim();
@@ -300,14 +300,15 @@ document.getElementById('formRegistro')?.addEventListener('submit', (e)=>{
   if (m < 0 || (m === 0 && hoy.getDate() < fn.getDate())) edad--;
   if(edad < 18){ msg.textContent = '❌ Debes ser mayor de 18 años.'; msg.style.color='red'; return; }
 
-  const descuento = correo.endsWith('@duocuc.cl') ? 20 : 0; // 20% de por vida
+  const descuento = correo.endsWith('@duocuc.cl') ? 20 : 0; 
   let usuarios = getUsuarios();
   if(usuarios.some(u=>u.correo===correo)){ msg.textContent='❌ Este correo ya está registrado.'; msg.style.color='red'; return; }
 
-  let puntos = 100; // bonus de bienvenida
+  // puntos de bienvenida
+  let puntos = 100; 
   const nuevo = { nombre, correo, password, descuento, puntos, nivel:1, prefCategoria:'' };
 
-  // Referidos: padrino recibe +50 puntos
+  // Referidos recibe +50 puntos 
   if(referido){
     const idx = usuarios.findIndex(u=>u.correo===referido);
     if(idx>=0){ usuarios[idx].puntos = (usuarios[idx].puntos||0)+50; }
@@ -318,7 +319,7 @@ document.getElementById('formRegistro')?.addEventListener('submit', (e)=>{
   msg.style.color='green';
 });
 
-// ======== Login ========
+//  Login 
 document.getElementById('formLogin')?.addEventListener('submit', (e)=>{
   e.preventDefault();
   const correo = document.getElementById('loginCorreo').value.trim();
@@ -335,7 +336,7 @@ document.getElementById('formLogin')?.addEventListener('submit', (e)=>{
   }
 });
 
-// ======== Perfil ========
+//  Perfil 
 function cargarPerfil(){
   const u = getActivo(); if(!u) return;
   document.getElementById('perfilNombre').value = u.nombre;
@@ -364,10 +365,11 @@ document.getElementById('formPerfil')?.addEventListener('submit', (e)=>{
 
 
 
-// ======== Gamificación: puntos & niveles ========
+//  Gamificacion puntos y niveles 
 function otorgarPuntos(n){
   let activo = getActivo(); if(!activo) return;
   activo.puntos = (activo.puntos||0) + n;
+
   // niveles simples por umbral
   const nivelAntes = activo.nivel||1;
   if(activo.puntos >= 500) activo.nivel = 5;
@@ -376,9 +378,9 @@ function otorgarPuntos(n){
   else if(activo.puntos >= 100) activo.nivel = 2;
   else activo.nivel = 1;
 
-  // canje (simple): cada 100 puntos = 1% adicional hasta 10%
+  // canje simple cada 100 puntos 
   const extra = Math.min(10, Math.floor((activo.puntos||0)/100));
-  activo.descuentoExtra = extra; // informativo
+  activo.descuentoExtra = extra; 
 
   // persistir
   let usuarios = getUsuarios().map(u=>u.correo===activo.correo? activo : u);
@@ -395,7 +397,7 @@ function actualizarHUDNivel(){
   if(nivelBox) nivelBox.textContent = `Nivel: ${activo.nivel||1}`;
 }
 
-// ======== Buscador simple (en los productos visibles) ========
+// Buscador simple (en los productos visibles) 
 document.getElementById('buscador')?.addEventListener('input', (e)=>{
   const q = e.target.value.toLowerCase();
   $$('#contenedor-productos .producto').forEach(div=>{
@@ -404,7 +406,7 @@ document.getElementById('buscador')?.addEventListener('input', (e)=>{
   });
 });
 
-// ======== Blog/Noticias (contenido educativo) ========
+//  Blog/Noticias (contenido educativo) 
 const posts = [
   { t: 'Cómo elegir tu primer PC Gamer', d: 'CPU, GPU, RAM y presupuesto: guía rápida para no perderte.', k: ['hardware','tips'] },
   { t: 'Headsets: 5 claves de audio 3D', d: 'Qué mirar en drivers, respuesta de frecuencia y comodidad.', k: ['audio','perifericos'] },
@@ -420,10 +422,10 @@ function renderBlog(){
   });
 }
 
-// ======== Eventos (mapa) ========
+// Eventos (mapa) 
 function initMapa(){
   if(!window.L) return;
-  const map = L.map('mapa').setView([-33.45,-70.66], 5); // Chile
+  const map = L.map('mapa').setView([-33.45,-70.66], 5); 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '© OpenStreetMap' }).addTo(map);
   const eventos = [
     {nombre:'Santiago Game Fest', coord:[-33.45,-70.66]},
@@ -435,14 +437,14 @@ function initMapa(){
   });
 }
 
-// ======== WhatsApp Soporte ========
+// WhatsApp Soporte 
 function irAServicioTecnico(){
   const numero = '+56990590665';
   const mensaje = 'Hola, necesito servicio técnico con Level-Up Gamer :)';
   window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`, '_blank');
 }
 
-// ======== Inicio ========
+//  Inicio 
 (function init(){
   renderBlog();
   mostrarCategoria('consolas');
@@ -457,16 +459,16 @@ function irAServicioTecnico(){
 
 
 function ingresarUsuario(correo, nombre) {
-  // Simulación: guardamos los datos del usuario en localStorage
+// Simulación: guardamos los datos del usuario en localStorage
   const usuario = { correo, nombre, puntos: 0, nivel: 1 };
-  setActivo(usuario); // ✅ Usamos usuarioActivo
+  setActivo(usuario); 
   cargarPerfil();
   alert("Ingreso exitoso, bienvenido " + nombre + "!");
 }
 
 function cargarPerfil() {
   const perfilDiv = document.getElementById("perfil");
-  const usuario = getActivo(); // ✅ Obtenemos usuarioActivo
+  const usuario = getActivo(); 
 
   if (!usuario) {
     perfilDiv.innerHTML = "<p>No has iniciado sesión.</p>";
@@ -483,12 +485,12 @@ function cargarPerfil() {
 }
 
 function cerrarSesion() {
-  // ✅ Limpiamos usuarioActivo en vez de usuarioActual
+  // Limpiamos usuarioActivo en vez de usuarioActual
   localStorage.removeItem("usuarioActivo");
   localStorage.removeItem("carrito");
   localStorage.removeItem("puntos");
 
-  // Limpia el DOM
+  //Limpia el DOM
   const perfilDiv = document.getElementById("perfil");
   if (perfilDiv) perfilDiv.innerHTML = "<p>No has iniciado sesión.</p>";
 
@@ -505,17 +507,17 @@ document.getElementById("buscador").addEventListener("input", (e)=>{
   renderizarProductos(texto, document.getElementById("cat").value, document.getElementById("orden").value);
 });
 
-// === FILTRO POR CATEGORÍA ===
+//  FILTRO POR CATEGORÍA 
 document.getElementById("cat").addEventListener("change", (e)=>{
   renderizarProductos(document.getElementById("buscador").value.toLowerCase(), e.target.value, document.getElementById("orden").value);
 });
 
-// === ORDENAR ===
+//  ORDENAR 
 document.getElementById("orden").addEventListener("change", (e)=>{
   renderizarProductos(document.getElementById("buscador").value.toLowerCase(), document.getElementById("cat").value, e.target.value);
 });
 
-// === FUNCIÓN REUTILIZABLE PARA MOSTRAR ===
+// FUNCIÓN REUTILIZABLE PARA MOSTRAR 
 function renderizarProductos(texto="", categoria="", orden="pop"){
   let lista = Object.values(productos).flat();
 
@@ -571,7 +573,7 @@ document.getElementById('formPerfil')?.addEventListener('submit', (e)=>{
   // actualizar datos
   activo.nombre = document.getElementById('perfilNombre').value.trim();
   const nuevaPass = document.getElementById('perfilPassword').value.trim();
-  if(nuevaPass) activo.password = nuevaPass; // si escribió nueva contraseña, se cambia
+  if(nuevaPass) activo.password = nuevaPass; 
   activo.prefCategoria = document.getElementById('prefCategoria').value;
 
   // actualizar en lista de usuarios y en sesión activa
