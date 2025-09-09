@@ -14,7 +14,7 @@ const productos = {
       fabricante: "Catan Studio",
       categoria: "juegos",
       descripcion: "Un clásico juego de estrategia donde los jugadores compiten por colonizar y expandirse en la isla de Catan. Ideal para 3-4 jugadores y perfecto para noches de juego en familia o con amigos."
-    },
+    }, 
     { id:"carcassonne",
       nombre: "Carcassonne",
       precio: 24990,
@@ -142,7 +142,6 @@ btnCategorias?.addEventListener('click', ()=>{
 });
 
 function plantillaProducto(p){
-  const precioAnterior = Math.round(p.precio*1.12);
   return `
   <div class="producto" data-id="${p.id}">
     <h3>${p.nombre}</h3>
@@ -157,13 +156,23 @@ function plantillaProducto(p){
       <button onclick="compartirProducto('${p.nombre}')">Compartir</button>
     </div>
 
-    <!-- reviews existentes -->
+    <!-- 📌 Reseñas -->
     <div class="reviews">
-      ...
+      <div class="stars" data-for="${p.id}">
+        ${[5,4,3,2,1].map(v=>`
+          <input type="radio" id="s-${p.id}-${v}" name="s-${p.id}" value="${v}">
+          <label for="s-${p.id}-${v}">★</label>
+        `).join('')}
+      </div>
+      <textarea id="rev-${p.id}" placeholder="Escribe tu reseña..." rows="2"></textarea>
+      <div class="wrap">
+        <button onclick="guardarResenia('${p.id}')">⭐ Enviar</button>
+        <span class="pill" id="avg-${p.id}">Promedio: ${getPromedio(p.id)} ⭐</span>
+      </div>
+      <div id="lista-${p.id}" class="review-list"></div>
     </div>
   </div>`;
 }
-
 function mostrarCategoria(cat){
   contenedor.innerHTML = '';
   (productos[cat]||[]).forEach(p=>{
