@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>🎮 Level-Up Gamer</title>
+
+ 
+  <!-- Fuentes y estilos -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header> 
+    <h1 class="logo">🎮 Level-Up Gamer</h1>
+    <nav>
+      <ul>
+        <li><a href="#catalogo">Productos</a></li>
+        <li><a href="#carrito">Carrito</a></li>
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="#eventos">Eventos</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- BARRA SUPERIOR: búsqueda + acciones -->
+  <section class="topbar wrap" style="padding:12px 24px;gap:12px">
+    <input id="buscador" placeholder="🔎 Buscar producto..." style="flex:1;min-width:220px;padding:10px;border-radius:8px;border:1px solid #222;background:#0e0e0e;color:#fff">
+    <select id="cat" class="pill">
+      <option value="">Todas las categorías</option>
+      <option value="juegos">Juegos de Mesa</option>
+      <option value="accesorios">Accesorios</option>
+      <option value="consolas">Consolas</option>
+      <option value="computadores">Computadores</option>
+      <option value="sillas">Sillas</option>
+      <option value="mouse">Mouse</option>
+      <option value="mousepad">Mousepad</option>
+      <option value="poleras">Poleras</option>
+      <option value="polerones">Polerones</option>
+     
+    </select>
+
+    <select id="orden" class="pill">
+      <option value="pop">🔝 Relevancia</option>
+      <option value="precioAsc">💲 Precio: bajo→alto</option>
+      <option value="precioDesc">💲 Precio: alto→bajo</option>
+      <option value="ratingDesc">⭐ Mejor calificados</option>
+    </select>
+
+    <button onclick="mostrarFormulario('registro')">📝 Registrarse</button>
+    <button onclick="mostrarFormulario('ingresar')">🔑 Ingresar</button>
+    <button onclick="mostrarFormulario('perfil'); cargarPerfil()">👤 Perfil</button>
+  </section>
+
+  <!-- FORMULARIOS (ocultos por defecto) -->
+  <section id="registro" class="form-section oculto">
+    <div class="form-card">
+      <h3>📝 Registro</h3>
+      <form id="formRegistro">
+        <input type="text" id="nombre" placeholder="Nombre completo" required>
+        <input type="email" id="correo" placeholder="Correo electrónico" required>
+        <input type="date" id="fechaNacimiento" required>
+        <input type="password" id="password" placeholder="Contraseña" required>
+        <input type="text" id="referido" placeholder="Correo de referido (opcional)">
+        <button type="submit" class="btn">Registrarse</button>
+      </form>
+      <p id="msgRegistro"></p>
+      <button onclick="cerrarForm('registro')" class="cerrar">❌ Cerrar</button>
+    </div>
+  </section>
+
+  <section id="ingresar" class="form-section oculto">
+    <div class="form-card">
+      <h3>🔑 Ingresar</h3>
+      <form id="formLogin">
+        <input type="email" id="loginCorreo" placeholder="Correo" required>
+        <input type="password" id="loginPassword" placeholder="Contraseña" required>
+        <button type="submit" class="btn">Entrar</button>
+      </form>
+      <p id="msgLogin"></p>
+      <button onclick="cerrarForm('ingresar')" class="cerrar">❌ Cerrar</button>
+    </div>
+  </section>
+
+  <section id="perfil" class="form-section oculto">
+  <div class="form-card">
+    <h3>👤 Mi Perfil</h3>
+    <form id="formPerfil">
+      <input type="text" id="perfilNombre" placeholder="Nombre completo" required>
+      <input type="email" id="perfilCorreo" placeholder="Correo electrónico" required disabled>
+      <input type="password" id="perfilPassword" placeholder="Nueva contraseña (opcional)">
+      <label>Preferencia de categoría</label>
+      <select id="prefCategoria">
+        <option value="">— Sin preferencia —</option>
+        <option value="juegos">Juegos</option>
+        <option value="accesorios">Accesorios</option>
+        <option value="consolas">Consolas</option>
+      </select>
+      <button type="submit" class="btn">💾 Guardar cambios</button>
+    </form>
+    <p id="msgPerfil"></p>
+    <div class="nivelesBox" style="margin-top:8px">
+      <span class="pill" id="puntosBox">Puntos LevelUp: 0</span>
+      <span class="pill" id="nivelBox">Nivel: 1</span>
+    </div>
+    <button onclick="cerrarForm('perfil')" class="cerrar">❌ Cerrar</button>
+    <button onclick="cerrarSesion()" class="btn-logout">🚪 Cerrar sesión</button>
+  </div>
+</section>
+  <!-- MAIN: catálogo, carrito, blog, eventos -->
+  <main>
+    <section id="catalogo" class="productos">
+      <div class="wrap" style="justify-content:space-between;align-items:center;">
+        <h2>Catálogo</h2>
+        <button id="btn-categorias" class="pill">📂 Ver Categorías</button>
+      </div>
+
+      <div id="lista-categorias" class="categorias oculto" style="margin:12px 0;">
+        <button onclick="mostrarCategoria('juegos')">🎲 Juegos</button>
+        <button onclick="mostrarCategoria('accesorios')">🎧 Accesorios</button>
+        <button onclick="mostrarCategoria('consolas')">🕹 Consolas</button>
+        <button onclick="mostrarCategoria('computadores')">💻 Computadores</button>
+        <button onclick="mostrarCategoria('sillas')">🪑 Sillas</button>
+        <button onclick="mostrarCategoria('mouse')">🖱 Mouse</button>
+        <button onclick="mostrarCategoria('mousepad')">🖼 Mousepad</button>
+        <button onclick="mostrarCategoria('poleras')">👕 Poleras</button>
+        <button onclick="mostrarCategoria('polerones')">🧥 Polerones</button>
+      </div>
+
+      <!-- CONTENEDOR DINÁMICO (usado por app.js completo) -->
+      <div id="contenedor-productos" class="grid"></div>
+    </section>
+
+    <section id="carrito" class="carrito panel" style="margin-top:24px;">
+      <h2>🛒 Carrito de Compras</h2>
+      <!-- lista de items -->
+      <div id="lista-carrito"></div>
+
+      <!-- totales -->
+      <div class="totales">
+        <p id="total">Total: $0 CLP</p>
+        <p id="ahorro" class="muted"></p>
+      </div>
+
+      <div class="wrap" style="margin-top:8px;">
+        <button type="button" class="btn btn-primary" onclick="pagar()">Pagar</button>
+        <button type="button" class="btn btn-warning" onclick="limpiarCarrito()">Limpiar Carrito</button>
+      </div>
+    </section>
+
+    <section id="blog" class="productos" style="margin-top:28px;">
+      <h2>📰 Blog & Noticias</h2>
+      <div id="blogPosts" class="grid"></div>
+    </section>
+
+    <section id="eventos" class="productos" style="margin-top:28px;">
+      <h2>🗺️ Eventos</h2>
+      <p class="muted">Asiste a eventos y gana puntos LevelUp</p>
+      <div id="mapa"></div>
+    </section>
+  </main>
+
+  <footer id="contacto">
+    <p>📩 Contáctanos: <a href="mailto:soporte@levelupgamer.cl">soporte@levelupgamer.cl</a></p>
+    <p>&copy; 2025 Level-Up Gamer - Todos los derechos reservados</p>
+    <span id="footerPuntos" style="position:absolute;right:24px;top:0;font-weight:bold;color:#fff;background:#222;padding:6px 16px;border-radius:16px;">Puntos LevelUp: 0</span>
+
+  </footer>
+
+  <!-- FAB Soporte (WhatsApp) -->
+  <button class="fab" title="Soporte WhatsApp" onclick="irAServicioTecnico()">💬 Servicio Técnico</button>
+
+  <!-- Scripts: Leaflet + app -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

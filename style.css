@@ -1,0 +1,328 @@
+
+:root{
+  --morado:#8000FF;
+  --verde:#39FF14;
+  --negro:#000;
+  --gris:#111;
+  --gris2:#1c1c1c;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Roboto, system-ui, Arial, sans-serif;
+  background: #000;
+  color: #fff;
+}
+
+/* ====== Header ====== */
+header {
+  background: var(--morado);
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.logo {
+  font-family: Orbitron, system-ui;
+  letter-spacing: .5px;
+  color: #36f750;
+  margin: 0;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+}
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* ====== General ====== */
+main { padding: 24px; }
+h2 {
+  font-family: Orbitron, system-ui;
+  color: var(--morado);
+  margin: 18px 0;
+}
+.wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.panel {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 14px;
+  padding: 14px;
+}
+.oculto { display: none !important; }
+
+/* ====== Catálogo ====== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
+  gap: 18px;
+}
+.producto {
+  background: #111;
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(128,0,255,.45);
+}
+.producto img {
+  max-width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.precio { color: var(--verde); font-weight: 700; }
+
+/* ====== Botones ====== */
+button, .btn {
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: var(--morado);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: .25s;
+  font-weight: 700;
+}
+button:hover, .btn:hover {
+  background: var(--verde);
+  color: #000;
+  transform: translateY(-1px);
+}
+.btn-primary { background: var(--morado); color: #fff; }
+.btn-warning { background: #ff9800; color: #000; }
+
+/* Pills */
+.pill {
+  display: inline-block;
+  background: #222;
+  border: 1px solid #333;
+  color: #ddd;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .85rem;
+}
+
+/* ====== Formularios ====== */
+.form-section {
+  display: flex;
+  justify-content: center;
+  margin: 26px 0;
+}
+.form-card {
+  background: var(--gris2);
+  color: #f1f1f1;
+  padding: 20px;
+  border-radius: 14px;
+  width: min(420px,94vw);
+  box-shadow: 0 4px 15px rgba(0,0,0,.6);
+  text-align: center;
+}
+.form-card h3 {
+  font-family: Orbitron;
+  margin: 0 0 10px;
+  color: #00ff88;
+}
+.form-card input, .form-card select {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+  background: #2a2a2a;
+  color: #fff;
+}
+.form-card input:focus, .form-card select:focus {
+  border: 2px solid #00ff88;
+}
+.cerrar { margin-top: 10px; background: #333; }
+
+/* ====== Filtros ====== */
+.filtros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(190px,1fr));
+  gap: 10px;
+  margin: 10px 0;
+}
+.filtros input, .filtros select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: #0e0e0e;
+  color: #fff;
+}
+
+/* ====== Carrito ====== */
+#carrito .linea {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px dashed #333;
+  padding: 8px 0;
+}
+#carrito input[type=number] {
+  width: 68px;
+  background: #0e0e0e;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px;
+}
+.totales { display: grid; gap: 6px; margin-top: 8px; }
+
+/* ====== Reseñas ====== */
+.stars {
+  display: inline-flex;
+  flex-direction: row-reverse;
+}
+.stars input { display: none; }
+.stars label {
+  cursor: pointer;
+  padding: 0 2px;
+  font-size: 20px;
+}
+.stars label:hover, .stars input:checked ~ label {
+  color: #FFD54F;
+}
+
+/* ====== Blog ====== */
+.post {
+  background: #0f0f0f;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #222;
+}
+
+/* ====== Mapa ====== */
+#mapa {
+  height: 360px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #222;
+}
+
+/* ====== FAB ====== */
+.fab {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 50;
+  border-radius: 999px;
+  padding: 14px 16px;
+  font-size: 18px;
+}
+
+/* ====== Footer ====== */
+footer {
+  background: #0d0d0d;
+  text-align: center;
+  padding: 20px;
+  color: #bbb;
+  border-top: 1px solid #222;
+}
+
+/* ====== Perfil Estilo HUD Gamer ====== */
+#perfil {
+  background: linear-gradient(145deg, #1a1a1a, #111);
+  padding: 130px;
+  border-radius: 16px;
+  margin: 20px auto;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(128,0,255,0.7);
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+}
+
+#perfil h3 {
+  font-size: 1.6rem;
+  color: #39FF14;
+  text-shadow: 0 0 6px #39FF14;
+  margin-bottom: 10px;
+}
+
+#perfil .info-usuario {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+#perfil .info-usuario .avatar {
+  font-size: 2.5rem;
+}
+
+#perfil .info-usuario .datos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.95rem;
+}
+
+#perfil .info-usuario .datos span {
+  display: inline-block;
+}
+
+#perfil .nivel-barra {
+  height: 12px;
+  background: #222;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+#perfil .nivel-barra .nivel-actual {
+  height: 100%;
+  background: linear-gradient(90deg, #8000FF, #39FF14);
+  width: 0%;
+  border-radius: 8px;
+  transition: width 0.5s ease;
+}
+
+#perfil button {
+  margin-top: 14px;
+  background: #8000FF;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+#perfil button:hover {
+  background: #39FF14;
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(57,255,20,0.7);
+}
+
+
+
+
+
+
